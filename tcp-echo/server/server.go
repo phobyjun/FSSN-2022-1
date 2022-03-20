@@ -15,7 +15,7 @@ func main() {
 	fmt.Println("> echo-server is activated")
 
 	socket, err := net.Listen("tcp", HOST+PORT)
-	CheckError(err)
+	checkError(err)
 
 	defer func(socket net.Listener) {
 		err := socket.Close()
@@ -25,25 +25,26 @@ func main() {
 		fmt.Println("> echo-server is de-activated")
 	}(socket)
 
-	con, err := socket.Accept()
-	CheckError(err)
-	fmt.Println("> client connected by IP address " + con.RemoteAddr().String())
-
 	for {
+		conn, err := socket.Accept()
+		checkError(err)
+		fmt.Println("> client connected by IP address " + conn.RemoteAddr().String())
+
 		buffer := make([]byte, 1024)
-		dlen, err := con.Read(buffer)
-		CheckError(err)
+		dlen, err := conn.Read(buffer)
+		checkError(err)
 
 		RecvData := string(buffer[:dlen])
 		fmt.Println("> echoed: " + RecvData)
-		con.Write([]byte(RecvData))
+		conn.Write([]byte(RecvData))
 		if RecvData == "quit" {
 			break
 		}
+		conn.Close()
 	}
 }
 
-func CheckError(err error) {
+func checkError(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
