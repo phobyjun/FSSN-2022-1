@@ -19,14 +19,6 @@ func main() {
 	conn, err := net.Dial("tcp", HOST+PORT)
 	CheckError(err)
 
-	defer func(con net.Conn) {
-		err := con.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("> echo-client is de-activated")
-	}(conn)
-
 	go sendHandler(conn)
 	for {
 		buffer := make([]byte, 1024)
@@ -38,6 +30,11 @@ func main() {
 }
 
 func sendHandler(conn net.Conn) {
+	defer func() {
+		fmt.Println("> echo-client is de-activated")
+		os.Exit(0)
+	}()
+
 	for {
 		fmt.Print("> ")
 		sc := bufio.NewScanner(os.Stdin)
@@ -45,7 +42,7 @@ func sendHandler(conn net.Conn) {
 		msg := sc.Text()
 		conn.Write([]byte(msg))
 		if msg == "quit" {
-			os.Exit(0)
+			break
 		}
 	}
 }

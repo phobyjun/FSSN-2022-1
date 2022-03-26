@@ -22,11 +22,11 @@ func main() {
 	CheckError(err)
 
 	defer func(socket net.Listener) {
+		recover()
 		err := socket.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("> echo-server is de-activated")
 	}(socket)
 
 	go mainThreadHandler()
@@ -72,6 +72,11 @@ func recvHandler(conn net.Conn) {
 }
 
 func mainThreadHandler() {
+	defer func() {
+		fmt.Println("> echo-server is de-activated")
+		os.Exit(0)
+	}()
+
 	for {
 		fmt.Print("> ")
 		sc := bufio.NewScanner(os.Stdin)
@@ -80,7 +85,7 @@ func mainThreadHandler() {
 		if msg == "quit" {
 			if THREAD_ACTIVE_COUNT == 0 {
 				fmt.Println("> stop procedure started")
-				os.Exit(0)
+				break
 			} else {
 				fmt.Printf("> active threads are remained: %d threads\n", THREAD_ACTIVE_COUNT)
 			}
