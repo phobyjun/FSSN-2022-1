@@ -27,20 +27,25 @@ func main() {
 		fmt.Println("> echo-client is de-activated")
 	}(conn)
 
+	go sendHandler(conn)
+	for {
+		buffer := make([]byte, 1024)
+		dlen, err := conn.Read(buffer)
+		CheckError(err)
+		RecvData := string(buffer[:dlen])
+		fmt.Println("> received: " + RecvData)
+	}
+}
+
+func sendHandler(conn net.Conn) {
 	for {
 		fmt.Print("> ")
 		sc := bufio.NewScanner(os.Stdin)
 		sc.Scan()
 		msg := sc.Text()
 		conn.Write([]byte(msg))
-
-		buffer := make([]byte, 1024)
-		dlen, err := conn.Read(buffer)
-		CheckError(err)
-		RecvData := string(buffer[:dlen])
-		fmt.Println("> received: " + RecvData)
 		if msg == "quit" {
-			break
+			os.Exit(0)
 		}
 	}
 }

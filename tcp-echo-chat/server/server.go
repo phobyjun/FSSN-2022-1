@@ -44,7 +44,6 @@ func recvHandler(conn net.Conn) {
 
 	defer func(conn net.Conn) {
 		THREAD_ACTIVE_COUNT -= 1
-
 		err := conn.Close()
 		if err != nil {
 			log.Fatal(err)
@@ -59,13 +58,14 @@ func recvHandler(conn net.Conn) {
 		}
 		RecvData := string(buffer[:dlen])
 		if RecvData == "quit" {
-			removeConnection(&GROUP_QUEUE, conn)
-		}
-		fmt.Printf("> received (%s) and echoed to %d clients", RecvData, len(GROUP_QUEUE))
-		for _, conn := range GROUP_QUEUE {
-			_, err2 := conn.Write([]byte(RecvData))
-			if err2 != nil {
-				return
+			GROUP_QUEUE = removeConnection(GROUP_QUEUE, conn)
+		} else {
+			fmt.Printf("> received ( %s ) and echoed to %d clients\n", RecvData, len(GROUP_QUEUE))
+			for _, conn := range GROUP_QUEUE {
+				_, err2 := conn.Write([]byte(RecvData))
+				if err2 != nil {
+					return
+				}
 			}
 		}
 	}
@@ -94,12 +94,14 @@ func CheckError(err error) {
 	}
 }
 
-func removeConnection(groupQueue *[]net.Conn, conn net.Conn) {
-	queue := *groupQueue
-	for i, current := range queue {
+func removeConnection(groupQueue []net.Conn, conn net.Conn) []net.Conn {
+	if len(groupQueue) == 1 {
+		return []net.Conn{}
+	}
+	for i, current := range groupQueue {
 		if current == conn {
-			queue = append(queue[:i], queue[i+1:]...)
+			groupQueue = append(groupQueue[:i], groupQueue[i+1:]...)
 		}
 	}
-	groupQueue = &queue
+	return groupQueue
 }
