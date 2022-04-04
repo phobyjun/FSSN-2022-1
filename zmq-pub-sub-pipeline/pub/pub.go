@@ -8,17 +8,19 @@ import (
 )
 
 func main() {
-	context, err := zmq.NewContext()
+	ctx, err := zmq.NewContext()
 	checkError(err)
-	defer context.Term()
+	defer ctx.Term()
 
-	publisher, err := context.NewSocket(zmq.PUB)
+	publisher, err := ctx.NewSocket(zmq.PUB)
 	checkError(err)
 	defer publisher.Close()
+	publisher.Bind("tcp://*:5557")
 
-	collector, err := context.NewSocket(zmq.PULL)
+	collector, err := ctx.NewSocket(zmq.PULL)
 	checkError(err)
 	defer collector.Close()
+	collector.Bind("tcp://*:5558")
 
 	for {
 		message, err := collector.Recv(0)
