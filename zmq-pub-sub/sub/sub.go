@@ -35,6 +35,7 @@ func main() {
 		checkError(err)
 		strArray := strings.Split(str, " ")
 		temperature, _ := strconv.Atoi(strArray[1])
+		totalTemp += temperature
 
 		fmt.Printf("Receive temperature for zipcode '%s' was %d F\n", zipFilter, temperature)
 	}
