@@ -4,10 +4,11 @@
 // - protoc             v3.19.4
 // source: hello_grpc.proto
 
-package __
+package hellogrpc
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
