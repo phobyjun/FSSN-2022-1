@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package bidirectional;
+
+option go_package="./";
+
+service Bidirectional {
+  rpc GetServerResponse(stream Message) returns (stream Message) {}
+}
+
+message Message {
+  string message = 1;
+}
