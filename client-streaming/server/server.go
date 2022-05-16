@@ -45,7 +45,7 @@ func main() {
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterClientStreamingServer(grpcServer, &server{})
-	log.Printf("server listening at %v", lis.Addr())
+	log.Println("Starting server. Listening on port 50051.")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to server: %v", err)
 	}
