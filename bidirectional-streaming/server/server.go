@@ -22,14 +22,13 @@ type server struct {
 func (s *server) GetServerResponse(stream pb.Bidirectional_GetServerResponseServer) error {
 	fmt.Println("Server processing gRPC bidirectional streaming.")
 	for {
-		in, err := stream.Recv()
+		message, err := stream.Recv()
 		if err == io.EOF {
 			return nil
 		}
 		if err != nil {
 			return err
 		}
-		message := in.GetMessage()
 		stream.SendMsg(message)
 	}
 }
