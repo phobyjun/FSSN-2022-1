@@ -1,7 +1,7 @@
 package main
 
 import (
-	"FSSN-2022-1/grpc/hello_gRPC"
+	"FSSN-2022-1/grpc/lec-07-prg-01-hello_gRPC"
 	"context"
 	"flag"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "FSSN-2022-1/grpc/Hello_gRPC/hellogrpc"
+	pb "FSSN-2022-1/grpc/lec-07-prg-01-hello_gRPC/hellogrpc"
 )
 
 var (
@@ -23,7 +23,7 @@ type server struct {
 
 func (s *server) MyFunction(ctx context.Context, request *pb.MyNumber) (*pb.MyNumber, error) {
 	response := pb.MyNumber{
-		Value: hello_gRPC.MyFunc(request.Value),
+		Value: lec_07_prg_01_hello_gRPC.MyFunc(request.Value),
 	}
 	return &response, nil
 }

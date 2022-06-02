@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/grpc/hello_gRPC/hellogrpc"
+	pb "FSSN-2022-1/grpc/lec-07-prg-01-hello_gRPC/hellogrpc"
 	"context"
 	"flag"
 	"fmt"

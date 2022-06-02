@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/grpc/bidirectional-streaming/bidirectional"
+	pb "FSSN-2022-1/grpc/lec-07-prg-02-bidirectional-streaming/bidirectional"
 	"flag"
 	"fmt"
 	"io"

@@ -1,11 +1,10 @@
 package main
 
 import (
-	pb "FSSN-2022-1/grpc/bidirectional-streaming/bidirectional"
+	pb "FSSN-2022-1/grpc/lec-07-prg-03-clientstreaming/clientstreaming"
 	"context"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"time"
 
@@ -33,7 +32,7 @@ func generateMessage() []*pb.Message {
 	return messages
 }
 
-func sendMessage(stub pb.BidirectionalClient) {
+func sendMessage(stub pb.ClientStreamingClient) {
 	messages := generateMessage()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -44,29 +43,18 @@ func sendMessage(stub pb.BidirectionalClient) {
 		log.Fatal(err)
 	}
 
-	wait := make(chan struct{})
-	go func() {
-		for {
-			in, err := responses.Recv()
-			if err == io.EOF {
-				close(wait)
-				return
-			}
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Printf("[server to client] %s\n", in.Message)
-		}
-	}()
-
 	for _, message := range messages {
 		if err := responses.Send(message); err != nil {
 			log.Fatal(err)
 		}
 		fmt.Printf("[client to server] %s\n", message.Message)
 	}
-	responses.CloseSend()
-	<-wait
+
+	response, err := responses.CloseAndRecv()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("[server to client] %d\n", response.Value)
 }
 
 func main() {
@@ -77,6 +65,6 @@ func main() {
 	}
 	defer channel.Close()
 
-	stub := pb.NewBidirectionalClient(channel)
+	stub := pb.NewClientStreamingClient(channel)
 	sendMessage(stub)
 }

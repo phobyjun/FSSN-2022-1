@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/grpc/client-streaming/clientstreaming"
+	pb "FSSN-2022-1/grpc/lec-07-prg-03-clientstreaming/clientstreaming"
 	"flag"
 	"fmt"
 	"io"
