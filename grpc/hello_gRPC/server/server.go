@@ -1,7 +1,7 @@
 package main
 
 import (
-	"FSSN-2022-1/hello_gRPC"
+	"FSSN-2022-1/grpc/hello_gRPC"
 	"context"
 	"flag"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	pb "FSSN-2022-1/hello_gRPC/hellogrpc"
+	pb "FSSN-2022-1/grpc/Hello_gRPC/hellogrpc"
 )
 
 var (
@@ -32,12 +32,12 @@ func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterMyServiceServer(grpcServer, &server{})
-	log.Printf("server listening at %v", lis.Addr())
+	fmt.Println("Starting server. Listening on port 50051.")
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to server: %v", err)
+		log.Fatalf("Failed to server: %v", err)
 	}
 }

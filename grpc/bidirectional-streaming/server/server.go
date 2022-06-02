@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/bidirectional-streaming/bidirectional"
+	pb "FSSN-2022-1/grpc/bidirectional-streaming/bidirectional"
 	"flag"
 	"fmt"
 	"io"
@@ -37,12 +37,12 @@ func main() {
 	flag.Parse()
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterBidirectionalServer(grpcServer, &server{})
 	fmt.Println("Starting server. Listening on port 50051")
 	if err := grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to server %v", err)
+		log.Fatalf("Failed to server %v", err)
 	}
 }

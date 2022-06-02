@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/server-streaming/serverstreaming"
+	pb "FSSN-2022-1/grpc/server-streaming/serverstreaming"
 	"flag"
 	"fmt"
 	"log"
@@ -47,7 +47,7 @@ func main() {
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterServerStreamingServer(grpcServer, &server{})
-	log.Println("Starting server. Listening on port 50051.")
+	fmt.Println("Starting server. Listening on port 50051.")
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to server: %v", err)
 	}

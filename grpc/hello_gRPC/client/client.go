@@ -1,9 +1,10 @@
 package main
 
 import (
-	pb "FSSN-2022-1/hello_gRPC/hellogrpc"
+	pb "FSSN-2022-1/grpc/hello_gRPC/hellogrpc"
 	"context"
 	"flag"
+	"fmt"
 	"log"
 
 	"google.golang.org/grpc"
@@ -30,5 +31,5 @@ func main() {
 	if err != nil {
 		log.Fatalf("could not calculate: %v", err)
 	}
-	log.Printf("gRPC result: %d", response.Value)
+	fmt.Printf("gRPC result: %d\n", response.Value)
 }

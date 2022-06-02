@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "FSSN-2022-1/server-streaming/serverstreaming"
+	pb "FSSN-2022-1/grpc/server-streaming/serverstreaming"
 	"context"
 	"flag"
 	"fmt"
