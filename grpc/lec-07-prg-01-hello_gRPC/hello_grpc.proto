@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package main;
 
-option go_package = "./";
+option go_package = "./hellogrpc";
 
 service MyService {
   rpc MyFunction(MyNumber) returns (MyNumber) {}
